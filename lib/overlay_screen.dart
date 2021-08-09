@@ -23,7 +23,7 @@ class OverlayScreen {
   factory OverlayScreen() => _instance;
 
   Screen _state = Screen.none;
-  BuildContext _overlayScreenContext;
+  BuildContext? _overlayScreenContext;
   final Map<String, CustomOverlayScreen> _customOverLayScreens = {
     'default-loading': CustomOverlayScreen(
       backgroundColor: Colors.transparent,
@@ -54,8 +54,8 @@ class OverlayScreen {
 
   /// This method displays a [OverlayScreen] by an identifier.
   void show(BuildContext context,
-      {String identifier = 'default-loading', bool Function() canPop}) {
-    assert(_instance._customOverLayScreens.isNotEmpty, "overlay screens empty");
+      {String identifier = 'default-loading', bool Function()? canPop}) {
+                                                                         assert(_instance._customOverLayScreens.isNotEmpty, "overlay screens empty");
     assert(_customOverLayScreens.containsKey(identifier), "widget not found");
     assert(_instance._state == Screen.none, "already showing screen");
     _instance._state = Screen.showing;
@@ -69,7 +69,7 @@ class OverlayScreen {
             onWillPop: () => canPop == null
                 ? Future.value(false)
                 : Future.sync(() => canPop()),
-            child: _customOverLayScreens[identifier]);
+            child: _customOverLayScreens[identifier]!);
       },
     );
   }
@@ -77,7 +77,7 @@ class OverlayScreen {
   /// This method dispose the [OverlayScreen].
   void pop() {
     assert(_instance._state == Screen.showing, "no screen displayed");
-    Navigator.pop(_instance._overlayScreenContext);
+    Navigator.pop(_instance._overlayScreenContext!);
     _instance._overlayScreenContext = null;
     _instance._state = Screen.none;
   }
@@ -93,8 +93,8 @@ class CustomOverlayScreen extends StatelessWidget {
 
   /// CustomOverlayScreen constructor.
   CustomOverlayScreen({
-    @required this.content,
-    @required this.backgroundColor,
+    required this.content,
+    required this.backgroundColor,
   });
 
   @override
