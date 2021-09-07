@@ -53,14 +53,14 @@ class OverlayScreen {
       (identifier) => _instance._customOverLayScreens.remove(identifier));
 
   /// This method displays a [OverlayScreen] by an identifier.
-  void show(BuildContext context,
-      {String identifier = 'default-loading', bool Function()? canPop}) {
+ Future<bool?> show(BuildContext context,
+      {String identifier = 'default-loading', bool Function()? canPop}) async {
                                                                          assert(_instance._customOverLayScreens.isNotEmpty, "overlay screens empty");
     assert(_customOverLayScreens.containsKey(identifier), "widget not found");
     assert(_instance._state == Screen.none, "already showing screen");
     _instance._state = Screen.showing;
 
-    showDialog(
+    return await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
